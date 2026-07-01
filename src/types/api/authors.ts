@@ -32,7 +32,7 @@ export interface PopularAuthor extends Author {
 export type GetPopularAuthorsResponse = PopularAuthor[];
 
 
-export interface GetAuthorBooksQuery extends BasePaginationQuery {}
+export type GetAuthorBooksQuery = BasePaginationQuery;
 
 export interface GetAuthorBooksResponse {
   author: Author;
