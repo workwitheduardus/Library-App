@@ -38,16 +38,20 @@ function InputField({
   required,
 }: InputFieldProps) {
   return (
-    <div className="flex flex-col gap-[2px] w-full">
+    <div className="flex flex-col gap-[2px] w-full bg-transparent">
       <Label
         htmlFor={id}
-        className="font-bold text-neutral-950 tracking-[-0.02em]"
-        style={{ fontSize: 14, lineHeight: "28px" }}
+        className="font-bold text-neutral-950 tracking-[-0.02em] text-sm h-7 flex items-center leading-[28px]"
       >
         {label}
       </Label>
 
-      <div className="relative">
+      <div
+        className={cn(
+          "flex flex-row items-center py-2 px-4 gap-2 w-full h-12 border rounded-xl transition-colors bg-transparent",
+          error ? "border-[#EE1D52]" : "border-neutral-300",
+        )}
+      >
         <Input
           id={id}
           type={type}
@@ -55,27 +59,18 @@ function InputField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
-          className={cn(
-            "h-12 rounded-xl px-4 text-sm border",
-            suffix && "pr-11",
-            error
-              ? "border-accent-red focus-visible:ring-accent-red/30"
-              : "border-neutral-300",
-          )}
+          className="w-full h-full border-0 p-0 bg-transparent text-sm focus-visible:ring-0 focus-visible:border-transparent focus-visible:outline-none placeholder:text-neutral-400 font-normal leading-[28px]"
         />
         {suffix && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2">
+          <div className="flex items-center justify-center w-20 h-20 shrink-0 text-neutral-950">
             {suffix}
-          </span>
+          </div>
         )}
       </div>
 
       {/* Error state */}
       {error && (
-        <p
-          className="font-medium text-accent-red tracking-[-0.03em]"
-          style={{ fontSize: 14, lineHeight: "28px" }}
-        >
+        <p className="font-medium text-accent-red tracking-[-0.03em] text-sm h-7 flex items-center leading-[28px]">
           {error}
         </p>
       )}
@@ -123,46 +118,38 @@ export default function Login () {
   return (
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       <div
-        className="w-full bg-white rounded-2xl flex flex-col gap-5 p-8 sm:p-10"
-        style={{ maxWidth: 324 }}
+        className="w-[324px] md:w-[400px] flex flex-col items-start gap-5 p-0"
       >
         {/* Logo row */}
-        <div className="flex items-center" style={{ gap: "11.79px" }}>
+        <div className="flex flex-row items-center gap-[11.79px] h-[33px]">
           <img
             src={BookyLogo}
             alt="Booky"
-            width={33}
-            height={33}
-            className="shrink-0"
+            className="shrink-0 w-[33px] h-[33px]"
           />
           <span
-            className="font-bold text-neutral-950"
-            style={{ fontSize: "25.1429px", lineHeight: "33px" }}
+            className="font-bold text-neutral-950 text-[25.1429px] leading-[33px]"
           >
             Booky
           </span>
         </div>
 
         {/* Heading block */}
-        <div className="flex flex-col gap-[2px]">
+        <div className="flex flex-col items-start gap-[0.5px] md:gap-2 w-full">
           <h1
-            className="font-bold text-neutral-950 tracking-[-0.02em]
-                       text-[24px] leading-[36px]
-                       sm:text-[28px] sm:leading-[38px]"
+            className="font-bold text-neutral-950 tracking-[-0.02em] text-2xl md:text-[28px] leading-[36px] md:leading-[38px]"
           >
             Login
           </h1>
           <p
-            className="font-semibold text-neutral-700 tracking-[-0.02em]
-                       text-[14px] leading-[28px]
-                       sm:text-[16px] sm:leading-[30px]"
+            className="font-semibold text-neutral-700 tracking-[-0.02em] text-sm leading-[28px] md:leading-[30px]"
           >
             Sign in to manage your library account.
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full">
           <InputField
             id="email"
             label="Email"
@@ -193,14 +180,14 @@ export default function Login () {
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
-                className="text-neutral-400 hover:text-neutral-700 transition-colors"
+                className="text-neutral-950 hover:text-neutral-700 transition-colors focus:outline-none flex items-center justify-center"
                 tabIndex={-1}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
+                  <EyeOff className="w-5 h-5 stroke-[1.67px]" />
                 ) : (
-                  <Eye className="w-5 h-5" />
+                  <Eye className="w-5 h-5 stroke-[1.67px]" />
                 )}
               </button>
             }
@@ -209,16 +196,9 @@ export default function Login () {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-full h-12 bg-primary hover:bg-primary/90 text-white
-                       font-bold rounded-full flex items-center justify-center
-                       gap-2 mt-2"
-            style={{
-              fontSize: 16,
-              lineHeight: "30px",
-              letterSpacing: "-0.02em",
-            }}
+            className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-full flex flex-row items-center justify-center gap-2 p-2 shadow-none border-0 transition-colors cursor-pointer text-base leading-[30px] tracking-[0.02em]"
           >
-            {isPending && <Loader2 className="w-5 h-5 animate-spin" />}
+            {isPending && <Loader2 className="w-5 h-5 animate-spin text-neutral-25" />}
             Login
           </Button>
         </form>
