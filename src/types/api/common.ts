@@ -1,4 +1,3 @@
-
 export interface PaginationMeta {
   page: number;
   limit: number;
@@ -20,4 +19,10 @@ export interface ApiErrorResponse {
   statusCode: number;
   message: string | string[];
   error?: string;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
 }
