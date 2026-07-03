@@ -1,24 +1,85 @@
-import { useState } from "react";
+import { useState,useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useMe } from "@/hooks/useMe";
-import { useAppSelector } from "@/app/store";
+import { useAppSelector, useAppDispatch } from "@/app/store";
+import { logout } from "@/features/auth/authSlice";
 import BookyLogo from "@/assets/Booky-logo.svg";
+
+interface DropdownMenuProps {
+  onClose: () => void;
+  onLogout: () => void;
+}
+
+function DropdownMenu({ onClose, onLogout }: DropdownMenuProps) {
+  return (
+    <div
+      className="absolute top-[74px] right-0 z-50 w-[184px] flex flex-col gap-4 p-4 bg-white rounded-2xl shadow-[0px_0px_20px_rgba(203,202,202,0.25)]"
+    >
+      <Link
+        to="/profile"
+        onClick={onClose}
+        className="font-semibold text-neutral-950 tracking-[-0.02em] text-base leading-[30px] hover:text-primary transition-colors"
+      >
+        Profile
+      </Link>
+      <Link
+        to="/loans"
+        onClick={onClose}
+        className="font-semibold text-neutral-950 tracking-[-0.02em] text-base leading-[30px] hover:text-primary transition-colors"
+      >
+        Borrowed List
+      </Link>
+      <Link
+        to="/reviews"
+        onClick={onClose}
+        className="font-semibold text-neutral-950 tracking-[-0.02em] text-base leading-[30px] hover:text-primary transition-colors"
+      >
+        Reviews
+      </Link>
+      <button
+        onClick={onLogout}
+        className="font-semibold text-[#EE1D52] tracking-[-0.02em] text-base leading-[30px] text-left hover:opacity-70 transition-opacity"
+      >
+        Logout
+      </button>
+    </div>
+  );
+}
 
 export default function UserHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
   const { data: cart } = useCart();
   const { data: me } = useMe();
 
   const cartCount = cart?.items?.length ?? 0;
-
   const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
   const avatarSrc = me?.profilePhoto ? `${BASE_URL}/${me.profilePhoto}` : null;
+
+  // Close dropdown when clicking
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,12 +89,19 @@ export default function UserHeader() {
       setSearchQuery("");
     }
   };
-
+  
   const handleCloseSearch = () => {
     setSearchOpen(false);
     setSearchQuery("");
   };
 
+    // Logout handler
+  const handleLogout = () => {
+    setDropdownOpen(false);
+    dispatch(logout());
+    navigate("/login");
+  };
+  
   return (
     <header className="w-full bg-white sticky top-0 z-40 shadow-[0px_0px_20px_rgba(203,202,202,0.25)]">
       {/* ═ MOBILE */}
@@ -67,9 +135,7 @@ export default function UserHeader() {
                   strokeWidth={2}
                 />
                 {cartCount > 0 && (
-                  <span
-                    className="absolute w-5 h-5 flex items-center justify-center bg-[#EE1D52] rounded-full pointer-events-non font-bold text-white text-[12px] leading-[23px] tracking-[-0.02em] top-[-3px] left-4"
-                  >
+                  <span className="absolute w-5 h-5 flex items-center justify-center bg-[#EE1D52] rounded-full pointer-events-non font-bold text-white text-[12px] leading-[23px] tracking-[-0.02em] top-[-3px] left-4">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
@@ -97,10 +163,7 @@ export default function UserHeader() {
             </Link>
 
             {/* Input pill */}
-            <div
-              className="flex items-center gap-1.5 px-3 h-10 border
-                         border-neutral-300 rounded-full bg-white flex-1"
-            >
+            <div className="flex items-center gap-1.5 px-3 h-10 border border-neutral-300 rounded-full bg-white flex-1">
               <Search
                 className="w-5 h-5 text-neutral-600 shrink-0"
                 strokeWidth={1.25}
@@ -143,9 +206,7 @@ export default function UserHeader() {
           onSubmit={handleSearch}
           className="flex-1 flex justify-center px-8"
         >
-          <div
-            className="flex items-center gap-1.5 px-4 h-11 border  border-neutral-300 rounded-full bg-white  w-full max-w-[500px]"
-          >
+          <div className="flex items-center gap-1.5 px-4 h-11 border  border-neutral-300 rounded-full bg-white  w-full max-w-[500px]">
             <Search
               className="w-5 h-5 text-neutral-600 shrink-0"
               strokeWidth={1.25}
@@ -170,9 +231,7 @@ export default function UserHeader() {
           >
             <ShoppingBag className="w-8 h-8 text-neutral-950" strokeWidth={2} />
             {cartCount > 0 && (
-              <span
-                className="absolute w-5 h-5 flex items-center justify-center bg-[#EE1D52] rounded-full pointer-events-none font-bold text-white text-[12px] leading-[23px]tracking-[-0.02em] top-[7px] left-[18px]"
-              >
+              <span className="absolute w-5 h-5 flex items-center justify-center bg-[#EE1D52] rounded-full pointer-events-none font-bold text-white text-[12px] leading-[23px]tracking-[-0.02em] top-[7px] left-[18px]">
                 {cartCount > 9 ? "9+" : cartCount}
               </span>
             )}
@@ -180,38 +239,45 @@ export default function UserHeader() {
 
           {/* Authenticated: */}
           {isAuthenticated ? (
-            <Link to="/profile" className="flex items-center gap-4">
-              {/* Avatar */}
-              <div
-                className="w-12 h-12 rounded-full bg-neutral-200 overflow-hidden shrink-0"
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen((v) => !v)}
+                className="flex items-center gap-4 cursor-pointer"
+                aria-label="Open user menu"
+                aria-expanded={dropdownOpen}
               >
-                {avatarSrc ? (
-                  <img
-                    src={avatarSrc}
-                    alt={me?.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div
-                    className="w-full h-full flex items-center justify-center  font-semibold text-neutral-600 text-base"
-                  >
-                    {me?.name?.[0]?.toUpperCase() ?? "U"}
-                  </div>
-                )}
-              </div>
+                {/* Avatar */}
+                <div className="w-12 h-12 rounded-full bg-neutral-200 overflow-hidden shrink-0">
+                  {avatarSrc ? (
+                    <img
+                      src={avatarSrc}
+                      alt={me?.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center  font-semibold text-neutral-600 text-base">
+                      {me?.name?.[0]?.toUpperCase() ?? "U"}
+                    </div>
+                  )}
+                </div>
 
-              {/* Name: */}
-              <span
-                className="font-semibold text-neutral-950 tracking-[-0.02em] text-[18px] leading-8"
-              >
-                {me?.name ?? "User"}
-              </span>
+                {/* Name: */}
+                <span className="font-semibold text-neutral-950 tracking-[-0.02em] text-[18px] leading-8">
+                  {me?.name ?? "User"}
+                </span>
 
-              <ChevronDown
-                className="w-6 h-6 text-neutral-950"
-                strokeWidth={2}
-              />
-            </Link>
+                <ChevronDown
+                  className={`w-6 h-6 text-neutral-950 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                  strokeWidth={2}
+                />
+              </button>
+
+              {dropdownOpen && (
+                <DropdownMenu onClose={() => setDropdownOpen(false)}
+                  onLogout={handleLogout}
+                />
+              )}
+            </div>
           ) : (
             /* Not logged in  */
             <div className="flex items-center gap-3">
