@@ -65,43 +65,6 @@ function AuthorCard({
   );
 }
 
-/* ── Footer ── */
-function HomeFooter() {
-  return (
-    <footer className="w-full flex flex-col items-center gap-4 py-8 px-4 border-t border-neutral-200 mt-8">
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <span className="text-primary text-xl">✦</span>
-        <span
-          className="font-bold text-neutral-950 text-[20px] leading-[34px] tracking-[-0.02em]"
-        >
-          Booky
-        </span>
-      </div>
-
-      {/* Tagline */}
-      <p
-        className="font-medium text-neutral-600 tracking-[-0.03em] text-xs leading-[22px] text-center max-w-[280px] md:text-sm md:leading-7 md:max-w-[400px]"
-      >
-        Discover inspiring stories and timeless knowledge. Explore online or
-        visit our nearest library branch.
-      </p>
-
-      {/* Social links */}
-      <div className="flex items-center gap-4">
-        {["f", "ig", "in", "tt"].map((icon) => (
-            <a
-            key={icon}
-            href="#"
-            className="w-7 h-7 flex items-center justify-center rounded-full border border-neutral-300 font-bold text-neutral-600 text-xs hover:border-primary hover:text-primary transition-colors"
-            > {icon}
-            </a>
-))}
-      </div>
-    </footer>
-  );
-}
-
 /* ── Main Home page ── */
 export default function Home() {
   const [activeDot,    setActiveDot]    = useState(0);
@@ -322,8 +285,6 @@ export default function Home() {
           )}
 
         </div>
-
-        <HomeFooter />
       </div>
     </UserLayout>
   );

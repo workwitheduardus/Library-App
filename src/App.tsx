@@ -8,6 +8,7 @@ import BookList from './pages/admin/BookList.tsx';
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BorrowedList from './pages/admin/BorrowsList.tsx';
 import UserLayout from './layouts/UserLayout.tsx';
+import DetailBook from './pages/user/DetailBook.tsx';
 
 function Books() {
   return (
@@ -60,6 +61,7 @@ return (
         </ProtectedRoute>
       }
     />
+    <Route path="/books/:id" element={<DetailBook />} />
 
     {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />
