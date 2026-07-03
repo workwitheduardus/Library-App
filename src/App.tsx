@@ -2,19 +2,13 @@ import './App.css'
 import {Navigate, Route, Routes} from "react-router-dom";
 import Login from './pages/auth/Login.tsx';
 import Register from './pages/auth/Register.tsx';
+import Home from './pages/user/Home.tsx';
 import UserList from './pages/admin/UserList.tsx';
 import BookList from './pages/admin/BookList.tsx';
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BorrowedList from './pages/admin/BorrowsList.tsx';
 import UserLayout from './layouts/UserLayout.tsx';
 
-function Home() {
-  return (
-    <UserLayout>
-      <div className="p-8">Home coming soon</div>
-    </UserLayout>
-  );
-}
 function Books() {
   return (
     <UserLayout>

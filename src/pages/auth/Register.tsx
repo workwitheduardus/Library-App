@@ -273,7 +273,7 @@ const { mutate: register, isPending } = useMutation<RegisterResponse, Error, Reg
 
           <div className="flex items-center justify-center gap-1">
             <span
-              className="font-semibold text-neutral-950 tracking-[-0.02em]text-sm leading-7 sm:text-base sm:leading-[30px]"
+              className="font-semibold text-neutral-950 tracking-[-0.02em] text-sm leading-7 sm:text-base sm:leading-[30px]"
             >
               Already have an account?
             </span>
