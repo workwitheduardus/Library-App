@@ -5,43 +5,59 @@ import UserList from './pages/admin/UserList.tsx';
 import BookList from './pages/admin/BookList.tsx';
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BorrowedList from './pages/admin/BorrowsList.tsx';
+import UserLayout from './layouts/UserLayout.tsx';
 
-function App() {
+function Home() {
+  return (
+    <UserLayout>
+      <div className="p-8">Home coming soon</div>
+    </UserLayout>
+  );
+}
+function Books() {
+  return (
+    <UserLayout>
+      <div className="p-8">Books coming soon</div>
+    </UserLayout>
+  );
+}
+function Cart() {
+  return (
+    <UserLayout>
+      <div className="p-8">Cart coming soon</div>
+    </UserLayout>
+  );
+}
+function Profile() {
+  return (
+    <UserLayout>
+      <div className="p-8">Profile coming soon</div>
+    </UserLayout>
+  );
+}
+
+
+export default function App() {
 return (
   <Routes>
+    {/* Auth */}
     <Route path="/login" element={<Login />} />
+
+    {/* User Page */}
+    <Route path="/" element={<Home />} />
+    <Route path="/books" element={<Books />} />
+    <Route path="/cart"
+      element={ <ProtectedRoute> <Cart />  </ProtectedRoute> }/>
+    <Route path="/profile"  element={ <ProtectedRoute> <Profile /></ProtectedRoute>}/>
+
+    {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />
     <Route path="/admin/books" element={<BookList />} />
-    <Route path="/books" element={<div>Loans (coming soon)</div>} />
-    < Route path="admin/loans" element={<ProtectedRoute><BorrowedList /></ProtectedRoute>} />
+    <Route path="admin/loans"   element={  <ProtectedRoute> <BorrowedList /> </ProtectedRoute> }
+    />
     <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
     <Route path="*" element={<Navigate to="/login" replace />} />
-    <Route
-      path="/admin/users"
-      element={
-        <ProtectedRoute>
-          <UserList />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path="/admin/books"
-      element={
-        <ProtectedRoute>
-          <BookList />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path="/admin/loans"
-      element={
-        <ProtectedRoute>
-          <div>Loans coming soon</div>
-        </ProtectedRoute>
-      }
-    />
   </Routes>
 );
 }
 
-export default App
