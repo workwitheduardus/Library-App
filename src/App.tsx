@@ -1,6 +1,7 @@
 import './App.css'
 import {Navigate, Route, Routes} from "react-router-dom";
 import Login from './pages/auth/Login.tsx';
+import Register from './pages/auth/Register.tsx';
 import UserList from './pages/admin/UserList.tsx';
 import BookList from './pages/admin/BookList.tsx';
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -42,21 +43,44 @@ return (
   <Routes>
     {/* Auth */}
     <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
 
     {/* User Page */}
     <Route path="/" element={<Home />} />
     <Route path="/books" element={<Books />} />
-    <Route path="/cart"
-      element={ <ProtectedRoute> <Cart />  </ProtectedRoute> }/>
-    <Route path="/profile"  element={ <ProtectedRoute> <Profile /></ProtectedRoute>}/>
+    <Route
+      path="/cart"
+      element={
+        <ProtectedRoute>
+          {" "}
+          <Cart />{" "}
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          {" "}
+          <Profile />
+        </ProtectedRoute>
+      }
+    />
 
     {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />
     <Route path="/admin/books" element={<BookList />} />
-    <Route path="admin/loans"   element={  <ProtectedRoute> <BorrowedList /> </ProtectedRoute> }
+    <Route
+      path="admin/loans"
+      element={
+        <ProtectedRoute>
+          {" "}
+          <BorrowedList />{" "}
+        </ProtectedRoute>
+      }
     />
-    <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
-    <Route path="*" element={<Navigate to="/login" replace />} />
+    <Route path="/admin" element={<Navigate to="/admin/loans" replace />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
 }

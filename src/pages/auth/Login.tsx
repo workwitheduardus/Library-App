@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {Eye, EyeOff, Loader2} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -8,7 +8,7 @@ import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
 import {useAppDispatch} from "@/app/store";
 import {setCredentials} from "@/features/auth/authSlice";
-import {loginApi} from "../../api/auth.api";
+import {loginApi} from "@/api/auth.api";
 import type {LoginRequest} from "@/types/api/auth";
 import BookyLogo from "@/assets/booky-logo.svg";
 import type {LoginResponse} from "@/types/api/auth";
@@ -89,24 +89,28 @@ export default function Login () {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { mutate: login, isPending } = useMutation({
-    mutationFn: (payload: LoginRequest) => loginApi(payload),
-    onSuccess: (data: LoginResponse) => {
-      dispatch(setCredentials({ token: data.token, user: data.user }));
-      navigate(data.user.role === "ADMIN" ? "/admin" : "/books");
-    },
-    onError: (err: Error) => {
-      const msg = err.message.toLocaleLowerCase();
-      if (msg.includes("email")) {
-        setEmailError(err.message);
-      } else if (msg.includes("password")) {
-        setPasswordError(err.message);
-      } else {
-        setEmailError("Invalid email or password");
-        setPasswordError("Invalid email or password");
-      }
-    },
-  });
+const { mutate: login, isPending } = useMutation<
+  LoginResponse,
+  Error,
+  LoginRequest
+>({
+  mutationFn: (payload) => loginApi(payload),
+  onSuccess: (data) => {
+    dispatch(setCredentials({ token: data.token, user: data.user }));
+    navigate(data.user.role === "ADMIN" ? "/admin" : "/books");
+  },
+  onError: (err: Error) => {
+    const msg = err.message.toLowerCase();
+    if (msg.includes("email")) {
+      setEmailError(err.message);
+    } else if (msg.includes("password")) {
+      setPasswordError(err.message);
+    } else {
+      setEmailError("Invalid email or password");
+      setPasswordError("Invalid email or password");
+    }
+  },
+});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -201,6 +205,19 @@ export default function Login () {
             {isPending && <Loader2 className="w-5 h-5 animate-spin text-neutral-25" />}
             Login
           </Button>
+
+           {/* Register link */}
+          <div className="flex flex-row items-center justify-center gap-1 w-full h-7 md:h-[30px]">
+            <span className="font-semibold text-neutral-950 tracking-[-0.02em] text-sm leading-7 md:text-base md:leading-[30px]">
+              Don't have an account?
+            </span>
+            <Link
+              to="/register"
+              className="font-bold text-primary tracking-[-0.02em] text-sm leading-7 md:text-base md:leading-[30px] hover:underline"
+            >
+              Register
+            </Link>
+          </div>
         </form>
       </div>
     </div>
