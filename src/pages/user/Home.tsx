@@ -4,46 +4,42 @@ import { ChevronRight } from "lucide-react";
 import UserLayout from "@/layouts/UserLayout";
 import BookCard from "@/components/user/BookCard";
 import { useRecommendedBooks } from "@/hooks/useRecommendedBooks";
-import { useCategories }       from "@/hooks/useCategories";
-import { usePopularAuthors }   from "@/hooks/usePopularAuthors";
-import { useAppSelector }      from "@/app/store";
+import { useCategories } from "@/hooks/useCategories";
+import { usePopularAuthors } from "@/hooks/usePopularAuthors";
+import { useAppSelector } from "@/app/store";
 
-/* ── Category icon map — matches the Figma icons per label ── */
+/* ── Category icon map ── */
 const CATEGORY_ICONS: Record<string, string> = {
-  "Fiction":               "📖",
-  "Non-Fiction":           "📰",
-  "Self-Improvement":      "🌱",
-  "Finance":               "💰",
+  "Fiction":"📖",
+  "Non-Fiction":"📰",
+  "Self-Improvement":"🌱",
+  "Finance":"💰",
   "Science & Technology":  "🔬",
-  "Education":             "🎓",
+  "Education":"🎓",
 };
 
 /* ── Popular Author card ── */
 function AuthorCard({
+  id,
   name,
   bookCount,
   photo,
 }: {
+  id: number;
   name: string;
   bookCount: number;
   photo?: string;
 }) {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
-  const avatarSrc = photo ? `${BASE_URL}/${photo}` : null;
-
   return (
-    <div className="flex flex-col items-center gap-2 shrink-0 w-[72px] md:w-[120px]">
+    <Link
+      to={`/authors/${id}/books`}
+      className="flex flex-col items-center gap-2 shrink-0 w-[72px] md:w-[120px]"
+    >
       {/* Avatar */}
       <div
-        className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] rounded-full bg-neutral-200 overflow-hidden shrink-0"
+        className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] rounded-full bg-neutral-200 overflow-hidden shrink-0 flex items-center justify-center font-bold text-neutral-600 text-lg"
       >
-        {avatarSrc ? (
-          <img src={avatarSrc} alt={name} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center font-bold text-neutral-600 text-lg">
-            {name?.[0]?.toUpperCase() ?? "A"}
-          </div>
-        )}
+        {name[0].toUpperCase()}
       </div>
 
       {/* Name */}
@@ -55,17 +51,18 @@ function AuthorCard({
 
       {/* Book count */}
       <p
-        className="font-medium tracking-[-0.03em] text-xs leading-[22px]
-                   text-center"
+        className="font-medium tracking-[-0.03em] text-xs leading-[22px] text-center"
         style={{ color: "#414651" }}
       >
         {bookCount} {bookCount === 1 ? "Book" : "Books"}
       </p>
-    </div>
+    </Link>
   );
 }
 
-/* ── Main Home page ── */
+
+{/* Main Home page */}
+
 export default function Home() {
   const [activeDot,    setActiveDot]    = useState(0);
   const [loadMore,     setLoadMore]     = useState(false);
@@ -241,6 +238,7 @@ export default function Home() {
                 {(authors ?? []).map((author) => (
                   <AuthorCard
                     key={author.id}
+                    id={author.id} 
                     name={author.name}
                     bookCount={author.bookCount}
                   />

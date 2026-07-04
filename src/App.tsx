@@ -9,14 +9,10 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import BorrowedList from './pages/admin/BorrowsList.tsx';
 import UserLayout from './layouts/UserLayout.tsx';
 import DetailBook from './pages/user/DetailBook.tsx';
+import Category from './pages/user/Category.tsx';
+import BookByAuthor from './pages/user/BookByAuthor.tsx';
 
-function Books() {
-  return (
-    <UserLayout>
-      <div className="p-8">Books coming soon</div>
-    </UserLayout>
-  );
-}
+
 function Cart() {
   return (
     <UserLayout>
@@ -42,7 +38,7 @@ return (
 
     {/* User Page */}
     <Route path="/" element={<Home />} />
-    <Route path="/books" element={<Books />} />
+    <Route path="/books" element={<Category />} />
     <Route
       path="/cart"
       element={
@@ -62,6 +58,7 @@ return (
       }
     />
     <Route path="/books/:id" element={<DetailBook />} />
+    <Route path="/authors/:id/books" element={<BookByAuthor />} />
 
     {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />
