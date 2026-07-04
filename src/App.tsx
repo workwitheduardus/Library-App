@@ -12,7 +12,7 @@ import DetailBook from './pages/user/DetailBook.tsx';
 import Category from './pages/user/Category.tsx';
 import BookByAuthor from './pages/user/BookByAuthor.tsx';
 import Checkout from './pages/user/Checkout.tsx';
-
+import Success from './pages/user/Success.tsx';
 
 function Cart() {
   return (
@@ -65,6 +65,14 @@ return (
       element={
         <ProtectedRoute>
           <Checkout />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/success"
+      element={
+        <ProtectedRoute>
+          <Success />
         </ProtectedRoute>
       }
     />

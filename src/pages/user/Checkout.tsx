@@ -73,7 +73,10 @@ export default function Checkout() {
         borrowDate,
       },
       {
-        onSuccess: () => navigate("/loans"),
+        onSuccess: () =>
+          navigate("/success", {
+            state: { borrowDate, duration },
+          }),
       },
     );
   };
