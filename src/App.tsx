@@ -76,6 +76,14 @@ return (
         </ProtectedRoute>
       }
     />
+    <Route
+      path="/loans"
+      element={
+        <ProtectedRoute>
+          <BorrowedList />
+        </ProtectedRoute>
+      }
+    />
 
     {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />

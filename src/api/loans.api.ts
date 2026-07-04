@@ -3,6 +3,7 @@ import type {
   GetAdminLoansResponse,
 } from "@/types/api/admin";
 import type { ApiResponse } from "@/types/api/common";
+import type { GetMyLoansQuery, GetMyLoansResponse } from "@/types/api/loans";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
@@ -36,5 +37,34 @@ export async function getAdminLoansApi(
   }
 
   const json = (await res.json()) as ApiResponse<GetAdminLoansResponse>;
+  return json.data;
+}
+
+export async function getMyLoansApi(
+  query: GetMyLoansQuery,
+): Promise<GetMyLoansResponse> {
+  const params = new URLSearchParams();
+  if (query.status && query.status !== "all")
+    params.set("status", query.status);
+  if (query.q) params.set("q", query.q);
+  if (query.page) params.set("page", String(query.page));
+  if (query.limit) params.set("limit", String(query.limit));
+
+  const token = localStorage.getItem("booky_token");
+  const res = await fetch(`${BASE_URL}/api/loans/my?${params.toString()}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(
+      (err as { message?: string }).message ?? "Failed to fetch loans",
+    );
+  }
+
+  const json = (await res.json()) as ApiResponse<GetMyLoansResponse>;
   return json.data;
 }
