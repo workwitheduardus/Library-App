@@ -5,6 +5,7 @@ import type {
   DeleteReviewResponse,
 } from "@/types/api/reviews";
 import type { ApiResponse } from "@/types/api/common";
+import type { GetMeReviewsQuery, GetMeReviewsResponse } from "@/types/api/me";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
@@ -58,4 +59,21 @@ export async function deleteReviewApi(
   });
   if (!res.ok) throw new Error("Failed to delete review");
   return res.json() as Promise<DeleteReviewResponse>;
+}
+
+export async function getMyReviewsApi(
+  query: GetMeReviewsQuery = {},
+): Promise<GetMeReviewsResponse> {
+  const params = new URLSearchParams();
+  if (query.q) params.set("q", query.q);
+  if (query.page) params.set("page", String(query.page));
+  if (query.limit) params.set("limit", String(query.limit));
+
+  const token = localStorage.getItem("booky_token");
+  const res = await fetch(`${BASE_URL}/api/me/reviews?${params}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) throw new Error("Failed to fetch reviews");
+  const json = (await res.json()) as ApiResponse<GetMeReviewsResponse>;
+  return json.data;
 }

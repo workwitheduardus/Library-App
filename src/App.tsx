@@ -14,6 +14,7 @@ import BookByAuthor from './pages/user/BookByAuthor.tsx';
 import Checkout from './pages/user/Checkout.tsx';
 import Success from './pages/user/Success.tsx';
 import Profile from './pages/user/Profile.tsx';
+import Reviews from './pages/user/Reviews.tsx';
 
 function Cart() {
   return (
@@ -82,6 +83,14 @@ return (
       element={
         <ProtectedRoute>
           <Profile />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/reviews"
+      element={
+        <ProtectedRoute>
+          <Reviews />
         </ProtectedRoute>
       }
     />
