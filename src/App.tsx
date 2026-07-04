@@ -13,6 +13,7 @@ import Category from './pages/user/Category.tsx';
 import BookByAuthor from './pages/user/BookByAuthor.tsx';
 import Checkout from './pages/user/Checkout.tsx';
 import Success from './pages/user/Success.tsx';
+import Profile from './pages/user/Profile.tsx';
 
 function Cart() {
   return (
@@ -21,14 +22,6 @@ function Cart() {
     </UserLayout>
   );
 }
-function Profile() {
-  return (
-    <UserLayout>
-      <div className="p-8">Profile coming soon</div>
-    </UserLayout>
-  );
-}
-
 
 export default function App() {
 return (
@@ -81,6 +74,14 @@ return (
       element={
         <ProtectedRoute>
           <BorrowedList />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          <Profile />
         </ProtectedRoute>
       }
     />
