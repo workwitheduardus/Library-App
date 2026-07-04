@@ -11,6 +11,7 @@ import UserLayout from './layouts/UserLayout.tsx';
 import DetailBook from './pages/user/DetailBook.tsx';
 import Category from './pages/user/Category.tsx';
 import BookByAuthor from './pages/user/BookByAuthor.tsx';
+import Checkout from './pages/user/Checkout.tsx';
 
 
 function Cart() {
@@ -59,6 +60,14 @@ return (
     />
     <Route path="/books/:id" element={<DetailBook />} />
     <Route path="/authors/:id/books" element={<BookByAuthor />} />
+    <Route
+      path="/checkout"
+      element={
+        <ProtectedRoute>
+          <Checkout />
+        </ProtectedRoute>
+      }
+    />
 
     {/* Admin Page */}
     <Route path="/admin/users" element={<UserList />} />
