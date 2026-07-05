@@ -179,7 +179,7 @@ export default function Category() {
     setSelectedRating(null);
   };
 
-  const cats = categories ?? [];
+  const cats = Array.isArray(categories) ? categories : [];
 
   return (
     <UserLayout>

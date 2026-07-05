@@ -21,7 +21,6 @@ function formatDuration(days: number) {
 
 /* ── Status badge ── */
 function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "BORROWED";
   const isReturned = status === "RETURNED";
   const isLate = status === "LATE";
 

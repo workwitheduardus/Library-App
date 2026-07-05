@@ -23,7 +23,6 @@ function AuthorCard({
   id,
   name,
   bookCount,
-  photo,
 }: {
   id: number;
   name: string;
