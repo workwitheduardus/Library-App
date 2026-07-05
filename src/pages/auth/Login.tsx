@@ -10,7 +10,7 @@ import {useAppDispatch} from "@/app/store";
 import {setCredentials} from "@/features/auth/authSlice";
 import {loginApi} from "@/api/auth.api";
 import type {LoginRequest} from "@/types/api/auth";
-import BookyLogo from "@/assets/booky-logo.svg";
+import BookyLogo from "@/assets/Booky-logo.svg";
 import type {LoginResponse} from "@/types/api/auth";
 
 // reusable login form component
